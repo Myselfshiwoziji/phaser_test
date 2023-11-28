@@ -1,9 +1,8 @@
-import Phaser from 'phaser'
 
-class Load extends Phaser.Scene {
+class thing extends Phaser.Scene {
 
     constructor(){
-        super('load')
+        super()
     }
 
     preload(){ 
