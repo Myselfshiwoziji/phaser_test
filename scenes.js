@@ -1,5 +1,6 @@
+import Phaser from 'phaser'
 
-class thing extends Phaser.Scene {
+export default class thing extends Phaser.Scene {
 
     constructor(){
         super()
@@ -11,7 +12,7 @@ class thing extends Phaser.Scene {
     }
 
     create() {
-        this.add.image('owen', 'assets/owen_jones.png')
+        this.add.image(400, 300, 'Background')
     }
 
 }
