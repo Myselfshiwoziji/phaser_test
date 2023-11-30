@@ -7,6 +7,7 @@ export default class loading_screen extends Phaser.Scene {
         super()
         this.player = undefined
         this.cursor = undefined
+        this.akey = undefined
     }
 
     preload(){ 
@@ -16,35 +17,41 @@ export default class loading_screen extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(825, 300, 'Background')
+        this.add.image(825, 500, 'Background').setScale(3)
         this.createPlayer()
         this.cursor = this.input.keyboard.createCursorKeys()
+        this.akey = this.input.keyboard.addKey(Phaser.input.keyboard.A)
     }
 
 
     createPlayer() { 
-        this.player = this.add.sprite(825, 300, 'guy')
+        this.player = this.physics.add.sprite(825, 500, 'guy').setScale(3)
+        this.player.setCollideWorldBounds(true)
         this.anims.create({
             key: 'walk',
             frames: this.anims.generateFrameNumbers('guy', {start: 0, end: 1}),
             frameRate: 5,
             repeat: -1
         })
+
+        return player
     }
+
     update() {
 
-    //    if (this.cursor.left.isDown) {
-    //        this.player.setVelocityX(-160)
-    //        this.player.anims.play('walk', true)
-    //    }
+       if (this.cursor.left.isDown) {
+        this.player.setVelocityX(-160)
+        this.player.anims.play('walk', true)
+       }
 
-    //    else if (this.cursor.right.isDown) {
-    //        this.player.setVelocityX(160)
-    //        this.player.anims.play('walk', true)
+       else if (this.cursor.right.isDown) {
+        this.player.setVelocityX(160)
+        this.player.anims.play('walk', true)
 
-    //    }
+       }
 
-    i
+       else this.player.setVelocityX(0)
+    
 
     }
 }
