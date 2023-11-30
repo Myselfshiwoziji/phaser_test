@@ -32,18 +32,19 @@ export default class loading_screen extends Phaser.Scene {
         })
     }
     update() {
-        //this.player.setVelocityX(0)
 
-       if (this.cursor.left.isDown) {
-           //this.player.setVelocityX(-10)
-           this.player.anims.play('walk', true)
-       }
+    //    if (this.cursor.left.isDown) {
+    //        this.player.setVelocityX(-160)
+    //        this.player.anims.play('walk', true)
+    //    }
 
-       else if (this.cursor.right.isDown) {
-           //this.player.setVelocityX(10)
-           this.player.anims.play('walk', true)
+    //    else if (this.cursor.right.isDown) {
+    //        this.player.setVelocityX(160)
+    //        this.player.anims.play('walk', true)
 
-       }
+    //    }
+
+    i
 
     }
 }
