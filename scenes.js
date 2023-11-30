@@ -44,9 +44,11 @@ export default class loading_screen extends Phaser.Scene {
             repeat: -1
         })
 
-        if (this.keyboard.cursors.left.isDown) {
-            this.player.setVelocity(160, 0)
-        }
+        this.player.setVelocity(0, 0)
+
+        // if (this.keyboard.cursors.left.isDown) {
+        //     this.player.setVelocity(160, 0)
+        // }
 
         return player
     }
