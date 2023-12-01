@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 
 import loading_screen from './scenes.js'
-import thing from './scenes.js'
 
 
 const config = {
@@ -12,6 +11,7 @@ const config = {
 	physics: {
 		default: 'arcade',
 		arcade: {
+			debugger: true,
 			gravity: { y: 0 },
 		},
 	},
