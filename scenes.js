@@ -1,6 +1,4 @@
 import Phaser from 'phaser'
-import { normalizePath } from 'vite'
-
 
 export default class loading_screen extends Phaser.Scene {
 
@@ -19,8 +17,7 @@ export default class loading_screen extends Phaser.Scene {
     create() {
         this.add.image(825, 500, 'Background').setScale(3)
 		this.cursors = this.input.keyboard.createCursorKeys()
-        this.player = this.createPlayer()
-
+		this.player = this.createPlayer()
     }
 
     createPlayer()
@@ -39,7 +36,21 @@ export default class loading_screen extends Phaser.Scene {
         return player
     }
     update() {
-        if (this.cursors.left.isDown)
+		var keys = this.input.keyboard.addKeys("W,A,S,D")
+
+		if (keys.A.isDown)
+		{
+			this.player.setVelocityX(-160)
+
+			//this.player.anims.play('walk', true)
+		}
+		else if (keys.D.isDown)
+		{
+			this.player.setVelocityX(160)
+
+			//this.player.anims.play('walk', true)
+		}
+        else if (this.cursors.left.isDown)
 		{
 			this.player.setVelocityX(-160)
 
@@ -52,13 +63,30 @@ export default class loading_screen extends Phaser.Scene {
 			//this.player.anims.play('walk', true)
 		}
 
+		else {
+			this.player.setVelocityX(0)
+
+			//this.player.anims.player('walk', true)
+		}
+
+		if (keys.W.isDown)
+        {
+			this.player.setVelocityY(-160)
+
+			//this.player.anims.play('walk', true)
+		}
+        else if (keys.S.isDown)
+        {
+			this.player.setVelocityY(160)
+
+			//this.player.anims.play('walk', true)
+		}
         else if (this.cursors.up.isDown)
         {
 			this.player.setVelocityY(-160)
 
 			//this.player.anims.play('walk', true)
 		}
-
         else if (this.cursors.down.isDown)
         {
 			this.player.setVelocityY(160)
@@ -68,11 +96,12 @@ export default class loading_screen extends Phaser.Scene {
 
         else
 		{
-			this.player.setVelocity(0,0)
+			this.player.setVelocityY(0)
 
 			//this.player.anims.play('walk')
 		}
-    
+
+
 
     }
 }
