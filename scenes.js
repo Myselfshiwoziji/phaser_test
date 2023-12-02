@@ -1,16 +1,20 @@
 import Phaser from 'phaser'
 
+import thing from './thing.js'
+
 export default class loading_screen extends Phaser.Scene {
 
     constructor() {
         super(loading_screen)
         this.player = undefined
         this.cursors = undefined
+		this.enemyspawn = undefined
     }
 
     preload(){ 
         this.load.image('Background', 'assets/game_banner.png')
         this.load.spritesheet('guy', 'assets/Stickman.png', {frameWidth: 28, frameHeight: 34})
+		this.load.image('enemy', 'assets/Stickman.png')
 
     }
 
@@ -18,6 +22,8 @@ export default class loading_screen extends Phaser.Scene {
         this.add.image(825, 500, 'Background').setScale(3)
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
+		this.enemyspawn = new thing(this, 'enemy')
+		this.enemyspawn.spawn(this.player.x)
     }
 
     createPlayer()
@@ -100,7 +106,6 @@ export default class loading_screen extends Phaser.Scene {
 
 			//this.player.anims.play('walk')
 		}
-
 
 
     }
