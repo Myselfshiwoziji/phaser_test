@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 
 import thing from './thing.js'
-
 export default class loading_screen extends Phaser.Scene {
 
     constructor() {
@@ -9,6 +8,7 @@ export default class loading_screen extends Phaser.Scene {
         this.player = undefined
         this.cursors = undefined
 		this.enemyspawn = undefined
+
     }
 
     preload(){ 
@@ -23,7 +23,10 @@ export default class loading_screen extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
 		this.enemyspawn = new thing(this, 'enemy')
-		this.enemyspawn.spawn(this.player.x)
+		/**this.enemy = group()
+
+		this.physics.moveToObject(this.enemyguy, this.player, 100)*/
+
     }
 
     createPlayer()
@@ -42,6 +45,12 @@ export default class loading_screen extends Phaser.Scene {
         return player
     }
     update() {
+
+		// for (let i = 0; this.player.y == 500; i++) {
+		// 	console.log(i)
+		// 	setTimeout(1000)
+		// }
+
 		var keys = this.input.keyboard.addKeys("W,A,S,D")
 
 		if (keys.A.isDown)
@@ -108,8 +117,14 @@ export default class loading_screen extends Phaser.Scene {
 		}
 
 
+		// const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+		// const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+
+		// console.log((-180*Phaser.Math.Angle.Between(screenCenterX, screenCenterY, this.input.activePointer.x, this.input.activePointer.y))/Math.PI)
+
     }
 }
+
 
 
 
