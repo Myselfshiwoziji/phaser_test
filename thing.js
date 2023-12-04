@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import loading_screen from "./scenes";
 
 export default class thing { 
     constructor(scene, enemy = 'enemy') {
@@ -16,10 +17,15 @@ export default class thing {
     {
         const x = (playerX < 400) ? Phaser.Math.Between(400, 800): Phaser.Math.Between(0,400)
 
-        const enemyguy = this.group.create(x, 16, this.key)
-        enemyguy.setVelocity(Phaser.Math.Between(-200, 200), 20)
+        const enemyguy = this.group.create(700, 200, this.key)
+        enemyguy.setVelocity(Phaser.Math.Between(-0, 0), 0)
+
+        
 
         return enemyguy
     }
 
+
+
 }
+
