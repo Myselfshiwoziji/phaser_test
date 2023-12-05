@@ -13,11 +13,16 @@ export default class thing {
         return this._group
     }
 
-    spawn(playerX = 0)
+    spawn(playerX = 0, playerY = 0)
     {
         const x = (playerX < 400) ? Phaser.Math.Between(400, 800): Phaser.Math.Between(0,400)
+        const y = (playerY < 400) ? Phaser.Math.Between(400, 800): Phaser.Math.Between(0,400)
 
-        const enemyguy = this.group.create(700, 200, this.key)
+        const xrand = Math.floor(Math.random() * 1701)
+        const yrand = Math.floor(Math.random() * 1001)
+
+
+        const enemyguy = this.group.create(xrand, yrand, this.key)
         enemyguy.setVelocity(Phaser.Math.Between(-0, 0), 0)
 
         

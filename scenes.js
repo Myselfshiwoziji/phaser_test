@@ -8,6 +8,8 @@ export default class loading_screen extends Phaser.Scene {
         this.player = undefined
         this.cursors = undefined
 		this.enemyspawn = undefined
+		this.gameOver = false
+
 
     }
 
@@ -15,6 +17,7 @@ export default class loading_screen extends Phaser.Scene {
         this.load.image('Background', 'assets/game_banner.png')
         this.load.spritesheet('guy', 'assets/Stickman.png', {frameWidth: 28, frameHeight: 34})
 		this.load.image('enemy', 'assets/Stickman.png')
+		this.load.image('fields', 'assets/fields-1.png')
 
     }
 
@@ -23,9 +26,22 @@ export default class loading_screen extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
 		this.enemyspawn = new thing(this, 'enemy')
-		/**this.enemy = group()
+		this.enemyspawn.spawn()
 
-		this.physics.moveToObject(this.enemyguy, this.player, 100)*/
+		this.physics.add.collider(this.player, this.enemyspawn.group, this.hitbox, null, this)
+		
+		const that = this;
+		function Count(i) {
+			if (i < 5) {
+			  that.enemyspawn.spawn()
+			  setTimeout(() => Count(i + 1), 1000);
+			}
+		  }
+		  Count(0);
+
+		//move towards player
+		
+		//this.physics.moveToObject(this.enemyspawn.group, this.player, 100)
 
     }
 
@@ -44,36 +60,45 @@ export default class loading_screen extends Phaser.Scene {
 
         return player
     }
+
+
     update() {
 
-		// for (let i = 0; this.player.y == 500; i++) {
-		// 	console.log(i)
-		// 	setTimeout(1000)
+		if (this.gameOver) {
+			return
+		}
+
+		// hitbox(player, enemyguy)
+		// {
+		// 	this.physics.pause()
+		// 	this.gameOver = true
 		// }
 
+
 		var keys = this.input.keyboard.addKeys("W,A,S,D")
+		var playerspeed = 350
 
 		if (keys.A.isDown)
 		{
-			this.player.setVelocityX(-160)
+			this.player.setVelocityX(-playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
 		else if (keys.D.isDown)
 		{
-			this.player.setVelocityX(160)
+			this.player.setVelocityX(playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
         else if (this.cursors.left.isDown)
 		{
-			this.player.setVelocityX(-160)
+			this.player.setVelocityX(-playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
 		else if (this.cursors.right.isDown)
 		{
-			this.player.setVelocityX(160)
+			this.player.setVelocityX(playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
@@ -86,25 +111,25 @@ export default class loading_screen extends Phaser.Scene {
 
 		if (keys.W.isDown)
         {
-			this.player.setVelocityY(-160)
+			this.player.setVelocityY(-playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
         else if (keys.S.isDown)
         {
-			this.player.setVelocityY(160)
+			this.player.setVelocityY(playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
         else if (this.cursors.up.isDown)
         {
-			this.player.setVelocityY(-160)
+			this.player.setVelocityY(-playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
         else if (this.cursors.down.isDown)
         {
-			this.player.setVelocityY(160)
+			this.player.setVelocityY(playerspeed)
 
 			//this.player.anims.play('walk', true)
 		}
