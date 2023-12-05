@@ -13,11 +13,8 @@ export default class thing {
         return this._group
     }
 
-    spawn(playerX = 0, playerY = 0)
+    spawn()
     {
-        const x = (playerX < 400) ? Phaser.Math.Between(400, 800): Phaser.Math.Between(0,400)
-        const y = (playerY < 400) ? Phaser.Math.Between(400, 800): Phaser.Math.Between(0,400)
-
         const xrand = Math.floor(Math.random() * 1701)
         const yrand = Math.floor(Math.random() * 1001)
 
