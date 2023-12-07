@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser, { Physics, Scene, Scenes } from "phaser";
 import loading_screen from "./scenes";
 
 export default class thing { 
@@ -20,12 +20,22 @@ export default class thing {
 
 
         const enemyguy = this.group.create(xrand, yrand, this.key)
-        enemyguy.setVelocity(Phaser.Math.Between(-0, 0), 0)
+        enemyguy.health = 5
 
-        
+  
 
+        //enemyguy.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100))
         return enemyguy
     }
+
+    // update() {
+    //     let vector = new Phaser.Math.Vector2(enemyguy.x - Scenes.player.x, this.enemyguy.y - Scenes.player.y)
+    //     vector.normalize()
+    //     vector.scale(100)
+    //     this.enemyguy.setVelocity(vector.x, vector.y)    
+
+    // }
+
 
 
 
