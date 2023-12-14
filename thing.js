@@ -15,8 +15,8 @@ export default class thing {
 
     spawn()
     {
-        const xrand = Math.floor(Math.random() * 1701)
-        const yrand = Math.floor(Math.random() * 1001)
+        const xrand = Math.floor((Math.random() - Math.random()) * 2701)
+        const yrand = Math.floor((Math.random() - Math.random()) * 2001)
 
 
         const enemyguy = this.group.create(xrand, yrand, this.key)

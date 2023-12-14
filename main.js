@@ -6,8 +6,8 @@ import loading_screen from './scenes.js'
 const config = {
 	type: Phaser.AUTO,
 	parent: 'app',
-	width: 1800,
-	height: 1000,
+	width: 1900,
+	height: 1100,
 	physics: {
 		default: 'arcade',
 		arcade: {
