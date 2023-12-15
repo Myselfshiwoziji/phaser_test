@@ -60,7 +60,8 @@ export default class loading_screen extends Phaser.Scene {
 		const Ekey = this.input.keyboard.addKeys("E")
 
 		this.enemyspawn.group.getChildren().forEach(function(enemy) {
-            enemy.health = 5;
+            enemy.health = Math.floor(5*Math.log(this.wave + 1));
+
         });
 
 
@@ -118,6 +119,9 @@ export default class loading_screen extends Phaser.Scene {
 			const speed = length > 75 ? length: 0
 			child.setVelocity(normalizedDirectionX * speed, normalizedDirectionY * speed);
 		}, this);
+
+
+
 	
 
 		//player movement
