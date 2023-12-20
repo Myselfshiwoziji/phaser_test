@@ -19,8 +19,11 @@ export default class thing {
         const yrand = Math.floor((Math.random() - Math.random()) * 2001)
 
 
-        const enemyguy = this.group.create(xrand, yrand, this.key)
+        const enemyguy = this.group.create(xrand, yrand, this.key).setScale(3)
         enemyguy.health = 5
+
+        
+        
 
   
 
@@ -28,13 +31,6 @@ export default class thing {
         return enemyguy
     }
 
-    // update() {
-    //     let vector = new Phaser.Math.Vector2(enemyguy.x - Scenes.player.x, this.enemyguy.y - Scenes.player.y)
-    //     vector.normalize()
-    //     vector.scale(100)
-    //     this.enemyguy.setVelocity(vector.x, vector.y)    
-
-    // }
 
 
 

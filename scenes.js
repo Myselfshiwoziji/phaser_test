@@ -26,11 +26,11 @@ export default class loading_screen extends Phaser.Scene {
 
     preload(){ 
         this.load.image('Background', 'assets/game_banner.png')
-        this.load.spritesheet('guy', 'assets/Stickman.png', {frameWidth: 28, frameHeight: 34})
-		this.load.image('enemy', 'assets/Stickman.png')
+        this.load.spritesheet('guy', 'assets/Warrior-Red.png', {frameWidth: 32, frameHeight: 32})
 		this.load.image('fields', 'assets/fields-1.png')
 		this.load.image('sword', 'assets/sword.png')
 		this.load.image('wall', 'assets/wall.png')
+		this.load.spritesheet('enemy', 'assets/Mage-Cyan.png', {frameWidth: 32, frameHeight: 32})
 
     }
 
@@ -40,7 +40,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.player = this.createPlayer()
 		//const wall = this.createWall()
 		this.enemyspawn = new thing(this, 'enemy')
-		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.8)
+		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.45)
 		this.canExecute = true
 		this.playerExecute = true
 		this.clickExecute = true
@@ -81,15 +81,35 @@ export default class loading_screen extends Phaser.Scene {
     createPlayer()
 	{
 		const player = this.physics.add.sprite(800, 400, 'guy').setScale(3)
-        player.setBounce(0.2)
         player.setCollideWorldBounds(true)
 
-		// this.anims.create({
-		// 	key: 'walk',
-		// 	frames: this.anims.generateFrameNumbers('guy', { start: 0, end: 1 }),
-		// 	frameRate: 10,
-		// 	repeat: -1
-		// })
+		this.anims.create({
+			key: 'forward',
+			frames: this.anims.generateFrameNumbers('guy', { start: 2, end: 3 }),
+			frameRate: 10,
+			repeat: -1
+		})
+
+		this.anims.create({
+			key: 'right',
+			frames: this.anims.generateFrameNumbers('guy', { start: 49, end: 50 }),
+			frameRate: 10,
+			repeat: -1
+		})
+
+		this.anims.create({
+			key: 'backward',
+			frames: this.anims.generateFrameNumbers('guy', { start: 96, end: 97 }),
+			frameRate: 10,
+			repeat: -1
+		})
+
+		this.anims.create({
+			key: 'left',
+			frames: this.anims.generateFrameNumbers('guy', { start: 144, end: 145 }),
+			frameRate: 10,
+			repeat: -1
+		})
 
         return player
     }
@@ -130,34 +150,37 @@ export default class loading_screen extends Phaser.Scene {
 		if (keys.A.isDown || this.cursors.left.isDown)
 		{
 			this.player.setVelocityX(-playerspeed)
-			//this.player.anims.play('walk', true)
+			
 		}
+
+
 		else if (keys.D.isDown || this.cursors.right.isDown)
 		{
 			this.player.setVelocityX(playerspeed)
-			//this.player.anims.play('walk', true)
 		}
 
 		else {
 			this.player.setVelocityX(0)
-			//this.player.anims.player('walk', true)
 		}
 
 		if (keys.W.isDown || this.cursors.up.isDown)
         {
 			this.player.setVelocityY(-playerspeed)
-			//this.player.anims.play('walk', true)
+			this.player.anims.play('backward', true)
 		}
         else if (keys.S.isDown || this.cursors.down.isDown)
         {
 			this.player.setVelocityY(playerspeed)
-			//this.player.anims.play('walk', true)
+			this.player.anims.play('forward', true)
 		}
 
         else
 		{
 			this.player.setVelocityY(0)
-			//this.player.anims.play('walk')
+		}
+
+		if (keys.S.isDown == false && keys.A.isDown == false && keys.W.isDown == false && keys.D.isDown == false) {
+			this.player.anims.stop()
 		}
 
 		//sword spin
@@ -207,9 +230,9 @@ export default class loading_screen extends Phaser.Scene {
 			this.swordhit_knockback = 20000
 			this.swordhit_damage = 1
 			if (this.sword.angle > 0) {
-				this.sword.setPosition(this.player.x + 30, this.player.y);
+				this.sword.setPosition(this.player.x + 40, this.player.y + 10);
 			}
-			else this.sword.setPosition(this.player.x - 30, this.player.y);
+			else this.sword.setPosition(this.player.x - 40, this.player.y + 10);
 		}
 
 		this.physics.add.overlap(this.sword, this.enemyspawn.group, this.destroyEnemy, null, this)
