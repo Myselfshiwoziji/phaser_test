@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+// import Phaser from 'phaser'
 
 import loading_screen from './scenes.js'
 

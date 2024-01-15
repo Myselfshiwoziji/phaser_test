@@ -1,4 +1,4 @@
-import Phaser, { Physics, Scene, Scenes } from "phaser";
+// import Phaser, { Physics, Scene, Scenes } from "phaser";
 import loading_screen from "./scenes";
 
 export default class thing { 
