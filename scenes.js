@@ -67,8 +67,6 @@ export default class loading_screen extends Phaser.Scene {
 
     }
 
-
-
 	// createWall()
 	// {
 	// 	const wall = this.physics.add.staticGroup()
@@ -130,12 +128,11 @@ export default class loading_screen extends Phaser.Scene {
 			const directionX = this.player.x - child.x;
 			const directionY = this.player.y - child.y;
 	
-			// Normalize the direction
+			// Normalizing direction
 			const length = Math.sqrt(directionX * directionX + directionY * directionY);
 			const normalizedDirectionX = directionX / length;
 			const normalizedDirectionY = directionY / length;
 	
-			// Set the velocity of the child towards the player
 			const speed = length > 75 ? length: 0
 			child.setVelocity(normalizedDirectionX * speed, normalizedDirectionY * speed);
 		}, this);
@@ -193,12 +190,12 @@ export default class loading_screen extends Phaser.Scene {
 					this.swordhit_cooldown = 100
 					this.swordhit_damage = 2
 					this.swordhit_knockback = 3000*Math.floor(Math.sqrt(throw_speed))
-					// console.log('cursorx ' + this.input.activePointer.x)
-					// console.log('cursory ' + this.input.activePointer.y)
+					
 					this.sword.setVelocity(throw_speed*Math.cos(this.player_cursor), throw_speed*Math.sin(this.player_cursor))
 					setTimeout(() => {
 						this.sword.setAcceleration(3*throw_speed*Math.cos(this.swordtoplayer_angle),3*throw_speed*Math.sin(this.swordtoplayer_angle))
 					}, this.swordhit_traveltime/4)
+
 					this.clickExecute = false
 					setTimeout(() => {
 						this.clickExecute = true
