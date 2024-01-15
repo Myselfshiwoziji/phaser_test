@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+// import Phaser from 'phaser'
 import { Column } from 'phaser-ui-tools';
 import thing from './thing.js'
 
@@ -63,6 +63,13 @@ export default class loading_screen extends Phaser.Scene {
             enemy.health = Math.floor(5*Math.log(this.wave + 1));
 
         });
+
+		this.anims.create({
+			key: 'keynove',
+			frames: this.anims.generateFrameNumbers('enemy', { start: 1, end: 4 }),
+			frameRate: 10,
+			repeat: -1			
+		})
 
 
     }
@@ -135,11 +142,9 @@ export default class loading_screen extends Phaser.Scene {
 	
 			const speed = length > 75 ? length: 0
 			child.setVelocity(normalizedDirectionX * speed, normalizedDirectionY * speed);
+			child.anims.play('keynove', true)
+
 		}, this);
-
-
-
-	
 
 		//player movement
 		var playerspeed = 350
