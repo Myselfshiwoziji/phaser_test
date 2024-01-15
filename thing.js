@@ -1,5 +1,5 @@
 // import Phaser, { Physics, Scene, Scenes } from "phaser";
-import loading_screen from "./scenes";
+// import loading_screen from "./scenes";
 
 export default class thing { 
     constructor(scene, enemy = 'enemy') {
@@ -19,7 +19,7 @@ export default class thing {
         const yrand = Math.floor((Math.random() - Math.random()) * 2001)
 
 
-        const enemyguy = this.group.create(xrand, yrand, this.key).setScale(3)
+        const enemyguy = this.group.create(xrand, yrand, this.key).setScale(4)
         enemyguy.health = 5
 
         

@@ -1,5 +1,5 @@
 // import Phaser from 'phaser'
-import { Column } from 'phaser-ui-tools';
+// import { Column } from 'phaser-ui-tools';
 import thing from './thing.js'
 
 export default class loading_screen extends Phaser.Scene {
@@ -40,12 +40,13 @@ export default class loading_screen extends Phaser.Scene {
 		this.player = this.createPlayer()
 		//const wall = this.createWall()
 		this.enemyspawn = new thing(this, 'enemy')
-		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.45)
+		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.5)
 		this.canExecute = true
 		this.playerExecute = true
 		this.clickExecute = true
 		this.player.health = 5
 		this.wave = 0
+		this.physics.world.setBounds(-350,-1000,2600,2602)
 
 		//colliders
 		//this.physics.add.collider(this.player, wall)
@@ -85,7 +86,7 @@ export default class loading_screen extends Phaser.Scene {
  
     createPlayer()
 	{
-		const player = this.physics.add.sprite(800, 400, 'guy').setScale(3)
+		const player = this.physics.add.sprite(800, 400, 'guy').setScale(4)
         player.setCollideWorldBounds(true)
 
 		this.anims.create({
@@ -116,11 +117,21 @@ export default class loading_screen extends Phaser.Scene {
 			repeat: -1
 		})
 
+		this.anims.create({
+			key: 'idle',
+			frames: this.anims.generateFrameNames('guy', {start: 0, end: 1}),
+			frameRate: 1,
+			repeat: -1,
+		})
+
         return player
     }
 
 
     update() {
+
+		console.log(this.player.y)
+
 		//wave spawn mechanic
 		setTimeout(() => {
 			this.spawnMoreEnemies(this.wave)
@@ -152,13 +163,24 @@ export default class loading_screen extends Phaser.Scene {
 		if (keys.A.isDown || this.cursors.left.isDown)
 		{
 			this.player.setVelocityX(-playerspeed)
-			
+
+			if (keys.W.isDown || keys.S.isDown) {
+			}	
+			else {
+				this.player.anims.play('left', true)
+			}
+
 		}
 
 
 		else if (keys.D.isDown || this.cursors.right.isDown)
 		{
 			this.player.setVelocityX(playerspeed)
+			if (keys.W.isDown || keys.S.isDown) {
+			}	
+			else {
+				this.player.anims.play('right', true)
+			}
 		}
 
 		else {
@@ -182,7 +204,7 @@ export default class loading_screen extends Phaser.Scene {
 		}
 
 		if (keys.S.isDown == false && keys.A.isDown == false && keys.W.isDown == false && keys.D.isDown == false) {
-			this.player.anims.stop()
+			this.player.anims.play('idle', true)
 		}
 
 		//sword spin

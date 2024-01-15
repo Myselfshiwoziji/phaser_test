@@ -1,5 +1,4 @@
 // import Phaser from 'phaser'
-
 import loading_screen from './scenes.js'
 
 
@@ -17,4 +16,4 @@ const config = {
 	scene: [loading_screen]
 }
 
-export default new Phaser.Game(config)
+new Phaser.Game(config)
