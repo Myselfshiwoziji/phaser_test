@@ -1,16 +1,9 @@
-// import Phaser from 'phaser'
-// import { Column } from 'phaser-ui-tools';
 import thing from './thing.js'
 
 export default class loading_screen extends Phaser.Scene {
 
     constructor() {
-        super(loading_screen)
-        this.player = undefined
-        this.cursors = undefined
-		this.enemyspawn = undefined
-		this.sword = undefined
-
+		super({key: 'loading_screen'});
     }
 
 	spawnMoreEnemies(no) {
@@ -35,6 +28,7 @@ export default class loading_screen extends Phaser.Scene {
     }
 
     create() {
+
         this.add.image(950, 300, 'fields').setScale(10)
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
@@ -47,6 +41,8 @@ export default class loading_screen extends Phaser.Scene {
 		this.player.health = 5
 		this.wave = 0
 		this.physics.world.setBounds(-350,-1000,2600,2602)
+		this.score = 0
+		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
 
 		//colliders
 		//this.physics.add.collider(this.player, wall)
@@ -71,6 +67,15 @@ export default class loading_screen extends Phaser.Scene {
 			frameRate: 10,
 			repeat: -1			
 		})
+
+		this.player.body.setSize(22, 23)
+		this.sword.body.setSize(50,60)
+		this.sword.setAngle(10)
+
+		this.scoreboard = this.add.text(this.cameras.main.x , this.cameras.main.y , `Score: ${this.score}`, { font: '48px Arial', fill: '#000000' });
+		this.wavenumber = this.add.text(this.cameras.main.x , this.cameras.main.y , `Score: ${this.wave}`, { font: '48px Arial', fill: '#000000' });
+		this.healthbar = this.add.text(this.cameras.main.x , this.cameras.main.y , `Score: ${this.player.health}`, { font: '48px Arial', fill: '#000000' });
+
 
 
     }
@@ -130,7 +135,16 @@ export default class loading_screen extends Phaser.Scene {
 
     update() {
 
-		console.log(this.player.y)
+		this.scoreboard.setPosition(this.cameras.main.worldView.x + 20 , this.cameras.main.worldView.y + 10)
+		this.wavenumber.setPosition(this.cameras.main.worldView.x + 20 , this.cameras.main.worldView.y + 70)
+		this.healthbar.setPosition(this.cameras.main.worldView.x + 1400 , this.cameras.main.worldView.y + 10)
+
+
+		this.scoreboard.setText(`Score: ${this.score}`)
+		this.wavenumber.setText(`Wave: ${this.wave}`)
+		this.healthbar.setText(`Health: ${this.player.health}`)
+
+
 
 		//wave spawn mechanic
 		setTimeout(() => {
@@ -152,13 +166,23 @@ export default class loading_screen extends Phaser.Scene {
 			const normalizedDirectionY = directionY / length;
 	
 			const speed = length > 75 ? length: 0
-			child.setVelocity(normalizedDirectionX * speed, normalizedDirectionY * speed);
+			child.setVelocity(normalizedDirectionX * speed * this.wave_speed_multi, normalizedDirectionY * speed *this.wave_speed_multi);
 			child.anims.play('keynove', true)
+			child.body.setSize(22, 23)
 
 		}, this);
 
 		//player movement
-		var playerspeed = 350
+		const rawplayerspeed = 300
+		if (this.player.body.velocity.x != 0 && this.player.body.velocity.y != 0) {
+			var playerspeed = rawplayerspeed/Math.sqrt(2);
+		}
+
+		else {
+			var playerspeed = rawplayerspeed
+		}
+
+
 
 		if (keys.A.isDown || this.cursors.left.isDown)
 		{
@@ -207,6 +231,7 @@ export default class loading_screen extends Phaser.Scene {
 			this.player.anims.play('idle', true)
 		}
 
+
 		//sword spin
 		this.swordtoplayer_angle = Phaser.Math.Angle.Between(this.sword.x, this.sword.y, this.player.x, this.player.y)
 		this.input.on('pointerdown', function (pointer) {
@@ -240,7 +265,6 @@ export default class loading_screen extends Phaser.Scene {
 		const playerCenterX = this.player.x
 		const playerCenterY = this.player.y
 
-		//console.log((180*Phaser.Math.Angle.Between(screenCenterX, screenCenterY, this.input.activePointer.x, this.input.activePointer.y))/Math.PI)
 		// var cursor_angle = Phaser.Math.Angle.Between(screenCenterX, screenCenterY, this.input.activePointer.x, this.input.activePointer.y)
 		this.player_cursor = Phaser.Math.Angle.Between(screenCenterX, screenCenterY, this.input.activePointer.x, this.input.activePointer.y)
 		//this.sword.angle = this.player_cursor*180/Math.PI + 90
@@ -279,6 +303,7 @@ export default class loading_screen extends Phaser.Scene {
 		}
 		if (enemy && enemy.health <= 0) {
 			enemy.destroy()
+			this.score += 1
 		}
 	}
 
@@ -290,20 +315,23 @@ export default class loading_screen extends Phaser.Scene {
 				this.player.setAcceleration(0,0)
 				setTimeout(() => {
 					this.playerExecute = true
-				}, 1000);
+				}, 400);
 				setTimeout(() => {
 					this.player.setAcceleration(0,0)
-				}, 500)
-				console.log(this.player.health)
+				}, 500)	
 			}
 		}
 
-		if (this.player.health == 0) {
+		if (this.player.health <= 0) {
 			this.playerExecute = false
 			console.log('you died!')
 			this.player.flipY
 			this.player.disableBody(true, true)
 			this.sword.disableBody(true, true)
+			this.death = this.add.text(this.player.x , this.player.y , `You died!`, { font: '58px Arial', fill: '#000000' });
+
+
+
 		}
 	})
 }
