@@ -1,5 +1,7 @@
 // import Phaser from 'phaser'
+import menu from './menu.js'
 import loading_screen from './scenes.js'
+
 
 
 const config = {
@@ -15,7 +17,7 @@ const config = {
 			gravity: { y: 0 },
 		},
 	},
-	scene: [loading_screen]
+	scene: [menu, loading_screen]
 }
 
 new Phaser.Game(config)
