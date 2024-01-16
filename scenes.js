@@ -98,28 +98,28 @@ export default class loading_screen extends Phaser.Scene {
 		this.anims.create({
 			key: 'forward',
 			frames: this.anims.generateFrameNumbers('guy', { start: 2, end: 3 }),
-			frameRate: 10,
+			frameRate: 6,
 			repeat: -1
 		})
 
 		this.anims.create({
 			key: 'right',
 			frames: this.anims.generateFrameNumbers('guy', { start: 49, end: 50 }),
-			frameRate: 10,
+			frameRate: 6,
 			repeat: -1
 		})
 
 		this.anims.create({
 			key: 'backward',
-			frames: this.anims.generateFrameNumbers('guy', { start: 96, end: 97 }),
-			frameRate: 10,
+			frames: this.anims.generateFrameNumbers('guy', { start: 98, end: 99 }),
+			frameRate: 6,
 			repeat: -1
 		})
 
 		this.anims.create({
 			key: 'left',
-			frames: this.anims.generateFrameNumbers('guy', { start: 144, end: 145 }),
-			frameRate: 10,
+			frames: this.anims.generateFrameNumbers('guy', { start: 145, end: 146 }),
+			frameRate: 6,
 			repeat: -1
 		})
 
@@ -331,9 +331,6 @@ export default class loading_screen extends Phaser.Scene {
 			this.player.disableBody(true, true)
 			this.sword.disableBody(true, true)
 			this.death = this.add.text(this.player.x , this.player.y , `You died!`, { font: '58px Arial', fill: '#000000' });
-
-
-
 		}
 	})
 }
