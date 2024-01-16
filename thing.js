@@ -1,5 +1,5 @@
 // import Phaser, { Physics, Scene, Scenes } from "phaser";
-// import loading_screen from "./scenes";
+// import loading_screen from "./scenes.js";
 
 export default class thing { 
     constructor(scene, enemy = 'enemy') {
