@@ -44,13 +44,8 @@ export default class loading_screen extends Phaser.Scene {
 		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
 		this.cameras.main.setRoundPixels(true)
 
-
-		//colliders
-		//this.physics.add.collider(this.player, wall)
-		//this.physics.add.collider(this.enemyspawn.group, wall)
 		this.physics.add.collider(this.enemyspawn.group, this.enemyspawn.group)
 
-		//sword
 		this.swordhit_cooldown = 500
 		this.swordhit_knockback = 20000
 		this.swordhit_damage = 1
