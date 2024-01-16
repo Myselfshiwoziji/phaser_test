@@ -10,7 +10,6 @@ export default class loading_screen extends Phaser.Scene {
 		if (this.enemyspawn.group.getChildren().length == 0) {
 			this.wave += 1
 			this.player.health += 1
-			console.log(`wave ${this.wave}`)
 			for (let i = 0; i < no + 3; i++) {
 				this.enemyspawn.spawn()
 			}
@@ -33,7 +32,6 @@ export default class loading_screen extends Phaser.Scene {
         this.add.image(950, 300, 'fields').setScale(10)
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
-		//const wall = this.createWall()
 		this.enemyspawn = new thing(this, 'enemy')
 		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.5)
 		this.canExecute = true
@@ -71,7 +69,7 @@ export default class loading_screen extends Phaser.Scene {
 			repeat: -1			
 		})
 
-		this.player.body.setSize(22, 23)
+		this.player.body.setSize(19, 22)
 		this.sword.body.setSize(40,51)
 		this.sword.setAngle(10)
 
@@ -172,6 +170,9 @@ export default class loading_screen extends Phaser.Scene {
 			child.setVelocity(normalizedDirectionX * speed * this.wave_speed_multi, normalizedDirectionY * speed *this.wave_speed_multi);
 			child.anims.play('keynove', true)
 			child.body.setSize(22, 23)
+
+			this.distancefromplayerx = child.x - this.player.x
+			this.distancefromplayery = child.y - this.player.y
 
 		}, this);
 
@@ -281,9 +282,9 @@ export default class loading_screen extends Phaser.Scene {
 			this.swordhit_knockback = 20000
 			this.swordhit_damage = 1
 			if (this.sword.angle > 0) {
-				this.sword.setPosition(this.player.x + 40, this.player.y + 10);
+				this.sword.setPosition(this.player.x + 40, this.player.y + 0);
 			}
-			else this.sword.setPosition(this.player.x - 40, this.player.y + 10);
+			else this.sword.setPosition(this.player.x - 40, this.player.y + 0);
 		}
 
 		this.physics.add.overlap(this.sword, this.enemyspawn.group, this.destroyEnemy, null, this)
@@ -315,7 +316,7 @@ export default class loading_screen extends Phaser.Scene {
 			if (this.playerExecute) {
 				this.player.health -= 1
 				this.playerExecute = false
-				this.player.setAcceleration(0,0)
+				this.player.setAcceleration(50*this.distancefromplayerx,-50*this.distancefromplayery)
 				setTimeout(() => {
 					this.playerExecute = true
 				}, 400);
@@ -327,8 +328,6 @@ export default class loading_screen extends Phaser.Scene {
 
 		if (this.player.health <= 0) {
 			this.playerExecute = false
-			console.log('you died!')
-			this.player.flipY
 			this.player.disableBody(true, true)
 			this.sword.disableBody(true, true)
 			this.death = this.add.text(this.player.x , this.player.y , `You died!`, { font: '58px Arial', fill: '#000000' });
