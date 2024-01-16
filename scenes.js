@@ -24,6 +24,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.load.image('sword', 'assets/sword.png')
 		this.load.image('wall', 'assets/wall.png')
 		this.load.spritesheet('enemy', 'assets/Mage-Cyan.png', {frameWidth: 32, frameHeight: 32})
+		this.cameras.main.setRoundPixels(true)
 
     }
 
@@ -43,6 +44,8 @@ export default class loading_screen extends Phaser.Scene {
 		this.physics.world.setBounds(-350,-1000,2600,2602)
 		this.score = 0
 		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
+		this.cameras.main.setRoundPixels(true)
+
 
 		//colliders
 		//this.physics.add.collider(this.player, wall)
@@ -64,12 +67,12 @@ export default class loading_screen extends Phaser.Scene {
 		this.anims.create({
 			key: 'keynove',
 			frames: this.anims.generateFrameNumbers('enemy', { start: 1, end: 4 }),
-			frameRate: 10,
+			frameRate: 8,
 			repeat: -1			
 		})
 
 		this.player.body.setSize(22, 23)
-		this.sword.body.setSize(50,60)
+		this.sword.body.setSize(40,51)
 		this.sword.setAngle(10)
 
 		this.scoreboard = this.add.text(this.cameras.main.x , this.cameras.main.y , `Score: ${this.score}`, { font: '48px Arial', fill: '#000000' });

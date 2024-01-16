@@ -9,12 +9,11 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
 	width: window.innerWidth,
     height:window.innerHeight,
-	// width: 1900,
-	// height: 1100,
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: { y: 0 },		},
+			gravity: { y: 0 },
+		},
 	},
 	scene: [loading_screen]
 }
