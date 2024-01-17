@@ -10,7 +10,6 @@ export default class menu extends Phaser.Scene{
     create() {
         this.start = false
         this.text = this.add.text(600,400, 'Click to start!', { font: '80px Arial', fill: '#FFFFFF' });
-        this.input.keyboard.addKey("E")
     }
 
     update() {

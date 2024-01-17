@@ -6,14 +6,14 @@ export default class loading_screen extends Phaser.Scene {
 		super({key: 'loading_screen'});
     }
 
-	spawnMoreEnemies(no) {
-		if (this.enemyspawn.group.getChildren().length == 0) {
-			this.wave += 1
-			this.player.health += 1
-			for (let i = 0; i < no + 3; i++) {
-				this.enemyspawn.spawn()
+	spawnMoreEnemies(no) { 
+			if (this.enemyspawn.group.getChildren().length == 0) {
+				this.wave += 1
+				this.player.health += 1
+				for (let i = 0; i < no + 3; i++) {
+					this.enemyspawn.spawn()
+				}
 			}
-		}
 	}
 
     preload(){ 
@@ -43,6 +43,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.score = 0
 		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
 		this.cameras.main.setRoundPixels(true)
+		this.upgrade = false
 
 		this.physics.add.collider(this.enemyspawn.group, this.enemyspawn.group)
 
@@ -120,7 +121,7 @@ export default class loading_screen extends Phaser.Scene {
 
 		this.anims.create({
 			key: 'idle',
-			frames: this.anims.generateFrameNames('guy', {start: 0, end: 1}),
+			frames: this.anims.generateFrameNumbers('guy', {start: 0, end: 1}),
 			frameRate: 1,
 			repeat: -1,
 		})
@@ -173,12 +174,13 @@ export default class loading_screen extends Phaser.Scene {
 
 		//player movement
 		const rawplayerspeed = 300
+		this.speed_multi = 1
 		if (this.player.body.velocity.x != 0 && this.player.body.velocity.y != 0) {
-			var playerspeed = rawplayerspeed/Math.sqrt(2);
+			var playerspeed = rawplayerspeed*this.speed_multi/Math.sqrt(2);
 		}
 
 		else {
-			var playerspeed = rawplayerspeed
+			var playerspeed = rawplayerspeed*this.speed_multi
 		}
 
 
