@@ -7,13 +7,13 @@ export default class loading_screen extends Phaser.Scene {
     }
 
 	spawnMoreEnemies(no) { 
-			if (this.enemyspawn.group.getChildren().length == 0) {
-				this.wave += 1
-				this.player.health += 1
-				for (let i = 0; i < no + 3; i++) {
-					this.enemyspawn.spawn()
-				}
+		if (this.enemyspawn.group.getChildren().length == 0) {
+			this.wave += 1
+			this.player.health += 1
+			for (let i = 0; i < no + 3; i++) {
+				this.enemyspawn.spawn()
 			}
+		}
 	}
 
     preload(){ 
@@ -43,7 +43,6 @@ export default class loading_screen extends Phaser.Scene {
 		this.score = 0
 		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
 		this.cameras.main.setRoundPixels(true)
-		this.upgrade = false
 
 		this.physics.add.collider(this.enemyspawn.group, this.enemyspawn.group)
 
@@ -132,9 +131,9 @@ export default class loading_screen extends Phaser.Scene {
 
     update() {
 
-		this.scoreboard.setPosition(this.cameras.main.worldView.x + 20 , this.cameras.main.worldView.y + 10)
-		this.wavenumber.setPosition(this.cameras.main.worldView.x + 20 , this.cameras.main.worldView.y + 70)
-		this.healthbar.setPosition(this.cameras.main.worldView.x + 1400 , this.cameras.main.worldView.y + 10)
+		this.scoreboard.setPosition(this.player.x - 800 , this.player.y - 470)
+		this.wavenumber.setPosition(this.player.x - 800 , this.player.y - 400)
+		this.healthbar.setPosition(this.player.x + 500 , this.player.y - 470)
 
 
 		this.scoreboard.setText(`Score: ${this.score}`)
@@ -313,7 +312,7 @@ export default class loading_screen extends Phaser.Scene {
 			if (this.playerExecute) {
 				this.player.health -= 1
 				this.playerExecute = false
-				this.player.setAcceleration(50*this.distancefromplayerx,-50*this.distancefromplayery)
+				this.player.setAcceleration(80*this.distancefromplayerx,-80*this.distancefromplayery)
 				setTimeout(() => {
 					this.playerExecute = true
 				}, 400);

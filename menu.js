@@ -4,12 +4,14 @@ export default class menu extends Phaser.Scene{
     }
 
     preload() {
+        this.load.image('banner', 'assets/game_banner.png')
 
     }
 
     create() {
         this.start = false
-        this.text = this.add.text(600,400, 'Click to start!', { font: '80px Arial', fill: '#FFFFFF' });
+        this.text = this.add.text(600,600, 'Click to start!', { font: '80px Arial', fill: '#FFFFFF' });
+        this.add.image(830, 400, 'banner')
     }
 
     update() {
