@@ -7,11 +7,23 @@ export default class loading_screen extends Phaser.Scene {
     }
 
 	spawnMoreEnemies(no) { 
-		if (this.enemyspawn.group.getChildren().length == 0) {
+		if (this.enemyspawn.group.getChildren().length == 0 && this.slimespawn.group.getChildren().length == 0) {
 			this.wave += 1
 			this.player.health += 1
 			for (let i = 0; i < no + 3; i++) {
-				this.enemyspawn.spawn()
+				this.spawner = Math.random()
+				if (this.wave > 20) {
+					this.prob = 1
+				}
+				else {
+					this.prob = this.wave/20
+				}
+				if (this.spawner > this.prob) {
+					this.enemyspawn.spawn()
+				}
+				else {
+					this.slimespawn.spawn()
+				}
 			}
 		}
 	}
@@ -23,6 +35,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.load.image('sword', 'assets/sword.png')
 		this.load.image('wall', 'assets/wall.png')
 		this.load.spritesheet('enemy', 'assets/Mage-Cyan.png', {frameWidth: 32, frameHeight: 32})
+		this.load.spritesheet('slime','assets/Slime.png', {frameWidth: 32, frameHeight: 32})
 		this.cameras.main.setRoundPixels(true)
 
     }
@@ -33,6 +46,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = this.createPlayer()
 		this.enemyspawn = new thing(this, 'enemy')
+		this.slimespawn = new thing(this, 'slime')
 		this.sword = this.physics.add.image(this.player.x, this.player.y, 'sword').setScale(1.5)
 		this.canExecute = true
 		this.playerExecute = true
@@ -45,6 +59,8 @@ export default class loading_screen extends Phaser.Scene {
 		this.cameras.main.setRoundPixels(true)
 
 		this.physics.add.collider(this.enemyspawn.group, this.enemyspawn.group)
+		this.physics.add.collider(this.slimespawn.group, this.enemyspawn.group)
+		this.physics.add.collider(this.slimespawn.group, this.slimespawn.group)
 
 		this.swordhit_cooldown = 500
 		this.swordhit_knockback = 20000
@@ -52,14 +68,16 @@ export default class loading_screen extends Phaser.Scene {
 		this.swordhit_traveltime = 1400
 		const Ekey = this.input.keyboard.addKeys("E")
 
-		this.enemyspawn.group.getChildren().forEach(function(enemy) {
-            enemy.health = Math.floor(5*Math.log(this.wave + 1));
-
-        });
-
 		this.anims.create({
 			key: 'keynove',
 			frames: this.anims.generateFrameNumbers('enemy', { start: 1, end: 4 }),
+			frameRate: 8,
+			repeat: -1			
+		})
+
+		this.anims.create({
+			key: 'slimekey',
+			frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 2 }),
 			frameRate: 8,
 			repeat: -1			
 		})
@@ -165,6 +183,25 @@ export default class loading_screen extends Phaser.Scene {
 			child.setVelocity(normalizedDirectionX * speed * this.wave_speed_multi, normalizedDirectionY * speed *this.wave_speed_multi);
 			child.anims.play('keynove', true)
 			child.body.setSize(22, 23)
+
+			this.distancefromplayerx = child.x - this.player.x
+			this.distancefromplayery = child.y - this.player.y
+
+		}, this);
+
+		this.slimespawn.group.getChildren().forEach(function(child) {
+			const directionX = this.player.x - child.x;
+			const directionY = this.player.y - child.y;
+	
+			// Normalizing direction
+			const length = Math.sqrt(directionX * directionX + directionY * directionY);
+			const normalizedDirectionX = directionX / length;
+			const normalizedDirectionY = directionY / length;
+	
+			const speed = length > 100 ? 400 : 3 
+			child.setVelocity(normalizedDirectionX * speed * this.wave_speed_multi, normalizedDirectionY * speed *this.wave_speed_multi);
+			child.anims.play('slimekey', true)
+			child.body.setSize(18, 14)
 
 			this.distancefromplayerx = child.x - this.player.x
 			this.distancefromplayery = child.y - this.player.y
@@ -285,6 +322,8 @@ export default class loading_screen extends Phaser.Scene {
 
 		this.physics.add.overlap(this.sword, this.enemyspawn.group, this.destroyEnemy, null, this)
 		this.physics.add.overlap(this.enemyspawn.group, this.player, this.playerhurt, null, this)
+		this.physics.add.overlap(this.sword, this.slimespawn.group, this.destroySlime, null, this)
+		this.physics.add.overlap(this.slimespawn.group, this.player, this.playerslimehurt, null, this)
     }
 
 	destroyEnemy = (sword, enemy) => {
@@ -307,6 +346,26 @@ export default class loading_screen extends Phaser.Scene {
 		}
 	}
 
+	destroySlime = (sword, slime) => {
+		if (slime && slime.health > 0 ) {
+			if (this.canExecute) {
+				this.canExecute = false
+				slime.setAcceleration(this.swordhit_knockback*Math.cos(this.player_cursor), this.swordhit_knockback*Math.sin(this.player_cursor))
+				slime.health -= this.swordhit_damage
+				setTimeout(() => {
+					this.canExecute = true
+					if (slime.health > 0) {
+						slime.setAcceleration(0,0)
+					}
+				}, this.swordhit_cooldown);
+			}
+		}
+		if (slime && slime.health <= 0) {
+			slime.destroy()
+			this.score += 2
+		}
+	}
+
 	playerhurt = (this.player, enemy => {
 		if (enemy && this.player.health > 0) {
 			if (this.playerExecute) {
@@ -316,6 +375,29 @@ export default class loading_screen extends Phaser.Scene {
 				setTimeout(() => {
 					this.playerExecute = true
 				}, 400);
+				setTimeout(() => {
+					this.player.setAcceleration(0,0)
+				}, 500)	
+			}
+		}
+
+		if (this.player.health <= 0) {
+			this.playerExecute = false
+			this.player.disableBody(true, true)
+			this.sword.disableBody(true, true)
+			this.death = this.add.text(this.player.x , this.player.y , `You died!`, { font: '58px Arial', fill: '#000000' });
+		}
+	})
+
+	playerslimehurt = (this.player, slime => {
+		if (slime && this.player.health > 0) {
+			if (this.playerExecute) {
+				this.player.health -= 2
+				this.playerExecute = false
+				this.player.setAcceleration(80*this.distancefromplayerx,-80*this.distancefromplayery)
+				setTimeout(() => {
+					this.playerExecute = true
+				}, 600);
 				setTimeout(() => {
 					this.player.setAcceleration(0,0)
 				}, 500)	
