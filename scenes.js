@@ -36,6 +36,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.load.image('wall', 'assets/wall.png')
 		this.load.spritesheet('enemy', 'assets/Mage-Cyan.png', {frameWidth: 32, frameHeight: 32})
 		this.load.spritesheet('slime','assets/Slime.png', {frameWidth: 32, frameHeight: 32})
+		this.load.image('tree', 'assets/Tree.png')
 		this.cameras.main.setRoundPixels(true)
 
     }
@@ -53,14 +54,17 @@ export default class loading_screen extends Phaser.Scene {
 		this.clickExecute = true
 		this.player.health = 5
 		this.wave = 0
-		this.physics.world.setBounds(-350,-1000,2600,2602)
+		this.physics.world.setBounds(-350,-1000,2600,2591)
 		this.score = 0
 		this.wave_speed_multi = 2**(0.1*(this.wave - 1))
 		this.cameras.main.setRoundPixels(true)
 
+		this.createWall()
+
 		this.physics.add.collider(this.enemyspawn.group, this.enemyspawn.group)
 		this.physics.add.collider(this.slimespawn.group, this.enemyspawn.group)
 		this.physics.add.collider(this.slimespawn.group, this.slimespawn.group)
+
 
 		this.swordhit_cooldown = 500
 		this.swordhit_knockback = 20000
@@ -94,14 +98,17 @@ export default class loading_screen extends Phaser.Scene {
 
     }
 
-	// createWall()
-	// {
-	// 	const wall = this.physics.add.staticGroup()
+	createWall()
+	{
+		const wall = this.physics.add.staticGroup()
 
-	// 	wall.create(1050, 300, 'wall').setScale(1.5).refreshBody()
+		wall.create(1050, 300, 'tree').setScale(7).refreshBody()
 
-	// 	return wall
-	// }
+		this.physics.add.collider(this.player, this.createWall.group)
+		this.physics.add.collider(this.enemyspawn.group, this.createWall.group)
+
+		return wall
+	}
  
     createPlayer()
 	{
@@ -139,7 +146,7 @@ export default class loading_screen extends Phaser.Scene {
 		this.anims.create({
 			key: 'idle',
 			frames: this.anims.generateFrameNumbers('guy', {start: 0, end: 1}),
-			frameRate: 1,
+			frameRate: 2,
 			repeat: -1,
 		})
 
@@ -199,7 +206,7 @@ export default class loading_screen extends Phaser.Scene {
 			const normalizedDirectionY = directionY / length;
 	
 			const speed = length > 100 ? 400 : 3 
-			child.setVelocity(normalizedDirectionX * speed * this.wave_speed_multi, normalizedDirectionY * speed *this.wave_speed_multi);
+			child.setVelocity((normalizedDirectionX * speed + 1) * this.wave_speed_multi, (normalizedDirectionY * speed + 1) *this.wave_speed_multi);
 			child.anims.play('slimekey', true)
 			child.body.setSize(18, 14)
 
@@ -371,13 +378,13 @@ export default class loading_screen extends Phaser.Scene {
 			if (this.playerExecute) {
 				this.player.health -= 1
 				this.playerExecute = false
-				this.player.setAcceleration(80*this.distancefromplayerx,-80*this.distancefromplayery)
+				this.player.setAcceleration(50*this.distancefromplayerx,-50*this.distancefromplayery)
 				setTimeout(() => {
 					this.playerExecute = true
-				}, 400);
+				}, 700);
 				setTimeout(() => {
 					this.player.setAcceleration(0,0)
-				}, 500)	
+				}, 700)	
 			}
 		}
 
@@ -397,10 +404,10 @@ export default class loading_screen extends Phaser.Scene {
 				this.player.setAcceleration(80*this.distancefromplayerx,-80*this.distancefromplayery)
 				setTimeout(() => {
 					this.playerExecute = true
-				}, 600);
+				}, 700);
 				setTimeout(() => {
 					this.player.setAcceleration(0,0)
-				}, 500)	
+				},700)	
 			}
 		}
 
